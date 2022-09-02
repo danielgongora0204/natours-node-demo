@@ -4,6 +4,7 @@ import users from './routes/user';
 import authentication from './routes/authentication';
 import unhandledRoutes from './middlewares/unhandledRoutes';
 
+//Making random notes
 //Express Configuration
 export default expressApp()
   .use('/api/v1/tours', tours)
