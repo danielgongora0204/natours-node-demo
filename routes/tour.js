@@ -21,10 +21,17 @@ const route = express.Router();
 //route.route('/').get(getTours).post(tourValidate, postTour);
 
 //Routes
-route.route('/top-five-cheapest').get(aliasTopFiveTours, getTours);
-route.route('/difficulty-stats').get(difficultyStats, getTourStats);
-route.route('/monthly-plan/:year').get(monthlyPlan, getTourStats);
-route.route('/').get(protect, getTours).post(postTour);
-route.route('/:id').get(getTour).patch(patchTour).delete(deleteTour);
+route.route('/top-five-cheapest').get(protect, aliasTopFiveTours, getTours);
+route.route('/difficulty-stats').get(protect, difficultyStats, getTourStats);
+route.route('/monthly-plan/:year').get(protect, monthlyPlan, getTourStats);
+route
+  .route('/')
+  .get(protect, getTours) // restrictTo('admin'),
+  .post(protect, postTour);
+route
+  .route('/:id')
+  .get(protect, getTour)
+  .patch(protect, patchTour)
+  .delete(protect, deleteTour);
 
 export default route;

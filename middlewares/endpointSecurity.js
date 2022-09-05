@@ -14,10 +14,20 @@ const checkHeader = (token) =>
     resolve(token.split(' ')[1]);
   });
 
+const addUserToRequest = (req, user) =>
+  new Promise((resolve) => {
+    req.user = user;
+    resolve();
+  });
+
 export default (req, res, next) =>
   checkHeader(req.headers.authorization)
     .then(verifyToken)
     .then(verifyUserToken)
+    .then((user) => addUserToRequest(req, user))
+    .then(() => {
+      console.log(req);
+    })
     .then(() => next())
     .catch((err) => {
       res.status(err.statusCode).send(err);
