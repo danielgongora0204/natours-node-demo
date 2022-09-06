@@ -1,5 +1,5 @@
 import Response from '../../constants/response';
-import hasNull from '../../functions/_validators/general/hasNull';
+import hasNullValidator from '../../functions/_validators/general/hasNull';
 
 const {
   error,
@@ -7,9 +7,9 @@ const {
   Codes: { BadRequest }
 } = Response;
 
-export default (obj) =>
+export const hasNull = (obj) =>
   new Promise((resolve, reject) => {
-    if (hasNull(obj)) {
+    if (hasNullValidator(obj)) {
       reject(
         error(
           BadRequest,
@@ -20,4 +20,12 @@ export default (obj) =>
       );
     }
     resolve();
+  });
+
+export const notNull = (data) =>
+  new Promise((resolve) => {
+    if (!data) {
+      resolve(false);
+    }
+    resolve(data);
   });

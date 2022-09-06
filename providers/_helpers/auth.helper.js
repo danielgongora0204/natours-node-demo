@@ -2,29 +2,23 @@ import Response from '../../constants/response';
 
 const {
   unauthorized,
-  Desc: { LoginFailed, Unauthorized }
+  Desc: { Unauthorized }
 } = Response;
 
-export const isNullUser = (data) =>
-  new Promise((resolve) => {
-    if (!data) {
-      resolve(false);
-    }
-    resolve(data);
-  });
-
-export const validateLogin = (result, data) =>
+export const validateAuthObject = (
+  result,
+  data = null,
+  message = Unauthorized
+) =>
   new Promise((resolve, reject) => {
-    if (!result) {
-      reject(unauthorized(data, LoginFailed));
-    }
+    if (!result) reject(unauthorized(data, message));
     resolve(result);
   });
 
 //TODO: This could be done directly in the database model, that way we wouldn't have to check if delete date exists
-export const checkDeletedUser = (user) =>
+export const validateUser = (user, data = null, message = Unauthorized) =>
   new Promise((resolve, reject) => {
-    if (!user || user.deletedDate) reject(unauthorized(null, Unauthorized));
+    if (!user || user.deletedDate) reject(unauthorized(data, message));
     resolve(user);
   });
 

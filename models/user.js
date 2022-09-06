@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
-import { hash, auth } from '../utils/crypt';
+import { bcryptHash, auth, randomToken, cryptoHash } from '../utils/crypt';
 
 const userSchema = new mongoose.Schema(
   {
@@ -42,11 +42,13 @@ const userSchema = new mongoose.Schema(
         message: 'User password and confirmation password must be the same'
       }
     },
+    passwordResetToken: String,
     createdAt: {
       type: Date,
       default: Date.now
     },
     passwordChangedAt: Date,
+    passwordResetTokenExpiration: Date,
     updatedDate: Date,
     deletedDate: Date
   },
@@ -78,7 +80,7 @@ userSchema.pre('validate', function (next) {
 userSchema.pre('save', function (next) {
   //Only runs this function in case password is actually modified
   if (!this.isModified('password')) return next();
-  hash(this.password).then((result) => {
+  bcryptHash(this.password).then((result) => {
     this.password = result;
     this.passwordConfirm = undefined;
     next();
@@ -92,6 +94,17 @@ userSchema.methods.changedPasswordAfter = function (jwtTimestamp) {
   if (this.passwordChangedAt)
     return jwtTimestamp < parseInt(this.passwordChangedAt.getTime() / 1000, 10);
   return false;
+};
+
+userSchema.methods.createPasswordResetToken = function () {
+  randomToken().then((token) =>
+    cryptoHash(token)
+      .then((hash) => {
+        this.passwordResetToken = hash;
+        this.passwordResetTokenExpiration = Date.now();
+      })
+      .then(() => token)
+  );
 };
 
 export default mongoose.modelNames().includes('User')

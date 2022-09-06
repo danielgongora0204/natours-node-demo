@@ -32,6 +32,10 @@ export default class Response {
       en: 'Incorrect username and/or password.',
       es: 'Usuario y/o contraseña incorrectos.'
     },
+    EmailDoesntExist: {
+      en: 'This email address does not exist.',
+      es: 'Este correo electronico no existe.'
+    },
     ResourceNotFound: {
       en: 'This resource does not exist',
       es: 'Este recurso no existe'

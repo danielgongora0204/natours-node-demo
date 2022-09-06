@@ -1,12 +1,9 @@
 import model from '../../models/user';
-import {
-  checkDeletedUser,
-  checkPasswordUpdated
-} from '../_helpers/auth.helper';
+import { validateUser, checkPasswordUpdated } from '../_helpers/auth.helper';
 
 export default (decoded) =>
   Promise.resolve(model.findById(decoded.id))
-    .then(checkDeletedUser)
+    .then(validateUser)
     .then((result) =>
       Promise.resolve(result.changedPasswordAfter(decoded.iat))
         .then(checkPasswordUpdated)
