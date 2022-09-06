@@ -7,7 +7,8 @@ export default (user) =>
       surname: user.surname,
       email: user.email,
       password: user.password,
-      passwordConfirm: user.passwordConfirm
+      passwordConfirm: user.passwordConfirm,
+      role: user.role
     })
   ).catch((err) => {
     throw err;

@@ -6,7 +6,7 @@ import {
   patchUser,
   deleteUser
 } from '../controllers/user';
-import protect from '../middlewares/endpointSecurity';
+import { protect, restrict } from '../middlewares/endpointSecurity';
 
 //Routes
 const route = express.Router();
@@ -16,6 +16,6 @@ route
   .route('/:id')
   .get(protect, getUser)
   .patch(protect, patchUser)
-  .delete(protect, deleteUser);
+  .delete(protect, restrict('admin', 'lead'), deleteUser);
 
 export default route;

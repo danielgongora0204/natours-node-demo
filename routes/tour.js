@@ -10,7 +10,7 @@ import {
   difficultyStats,
   monthlyPlan
 } from '../controllers/tour';
-import protect from '../middlewares/endpointSecurity';
+import { protect, restrict } from '../middlewares/endpointSecurity';
 //import { idValidate, tourValidate } from '../functions/_validators/tour';
 
 //Routes
@@ -32,6 +32,6 @@ route
   .route('/:id')
   .get(protect, getTour)
   .patch(protect, patchTour)
-  .delete(protect, deleteTour);
+  .delete(protect, restrict('admin', 'lead'), deleteTour);
 
 export default route;

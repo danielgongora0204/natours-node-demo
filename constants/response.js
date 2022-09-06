@@ -24,6 +24,10 @@ export default class Response {
       en: 'You are not authorized to do this operation',
       es: 'No estas autorizado para hacer esta operación'
     },
+    Permission: {
+      en: 'You do not have permission to perform this operation',
+      es: 'No tienes permisos para realizar esta operación'
+    },
     LoginFailed: {
       en: 'Incorrect username and/or password.',
       es: 'Usuario y/o contraseña incorrectos.'
@@ -201,8 +205,8 @@ export default class Response {
     return response;
   }
 
-  static unauthorized(data, message) {
-    const response = new Response(Response.Codes.Unauthorized, data, message);
+  static unauthorized(data, message, statusCode = Response.Codes.Unauthorized) {
+    const response = new Response(statusCode, data, message);
     return response;
   }
 }

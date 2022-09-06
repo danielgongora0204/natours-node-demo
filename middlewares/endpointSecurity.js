@@ -4,7 +4,8 @@ import verifyUserToken from '../services/authentication/verifyUserToken.service'
 
 const {
   unauthorized,
-  Desc: { Unauthorized }
+  Codes: { Forbidden },
+  Desc: { Unauthorized, Permission }
 } = Response;
 
 const checkHeader = (token) =>
@@ -20,15 +21,29 @@ const addUserToRequest = (req, user) =>
     resolve();
   });
 
-export default (req, res, next) =>
+const checkRolePermission = (roles, userRole) =>
+  new Promise((resolve, reject) => {
+    if (!roles.includes(userRole)) {
+      reject(unauthorized(null, Permission, Forbidden));
+    }
+    resolve();
+  });
+
+export const protect = (req, res, next) =>
   checkHeader(req.headers.authorization)
     .then(verifyToken)
     .then(verifyUserToken)
     .then((user) => addUserToRequest(req, user))
-    .then(() => {
-      console.log(req);
-    })
     .then(() => next())
     .catch((err) => {
       res.status(err.statusCode).send(err);
     });
+
+export const restrict =
+  (...roles) =>
+  (req, res, next) =>
+    checkRolePermission(roles, req.user.role)
+      .then(() => next())
+      .catch((err) => {
+        res.status(err.statusCode).send(err);
+      });
