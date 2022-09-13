@@ -1,3 +1,4 @@
 import resetPassword from '../../providers/authentication/passwordReset.provider';
 
-export default (email) => Promise.resolve(resetPassword(email));
+export default ({ body, params: { token } }) =>
+  Promise.resolve(body).then(resetPassword(token));

@@ -21,12 +21,16 @@ export default class Response {
 
   static Desc = {
     Unauthorized: {
-      en: 'You are not authorized to do this operation',
-      es: 'No estas autorizado para hacer esta operación'
+      en: 'You are not authorized to do this operation.',
+      es: 'No estas autorizado para hacer esta operación.'
+    },
+    TokenExpired: {
+      en: 'This token has either expired or is invalid.',
+      es: 'Este token ha expirado o es invalido.'
     },
     Permission: {
-      en: 'You do not have permission to perform this operation',
-      es: 'No tienes permisos para realizar esta operación'
+      en: 'You do not have permission to perform this operation.',
+      es: 'No tienes permisos para realizar esta operación.'
     },
     LoginFailed: {
       en: 'Incorrect username and/or password.',
@@ -37,8 +41,8 @@ export default class Response {
       es: 'Este correo electronico no existe.'
     },
     ResourceNotFound: {
-      en: 'This resource does not exist',
-      es: 'Este recurso no existe'
+      en: 'This resource does not exist.',
+      es: 'Este recurso no existe.'
     },
     CastError: {
       en: 'Invalid {path}: {value}.',

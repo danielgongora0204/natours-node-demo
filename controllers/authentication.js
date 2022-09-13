@@ -3,15 +3,17 @@ import Response from '../constants/response';
 import loginService from '../services/authentication/login.service';
 import signupService from '../services/authentication/signup.service';
 import forgotPasswordService from '../services/authentication/passwordForgot.service';
+import resetPasswordService from '../services/authentication/passwordReset.service';
 
 const { created, ok, nocontent } = Response;
 
 export const login = (req, res) =>
   handleFunction(
     (request) =>
-      loginService({ email: req.body.email, password: req.body.password }).then(
-        ok
-      ),
+      loginService({
+        email: request.body.email,
+        password: request.body.password
+      }).then(ok),
     res,
     req
   );
@@ -27,13 +29,21 @@ export const forgotPassword = (req, res) =>
   handleFunction(
     (request) =>
       forgotPasswordService({
-        email: req.body.email,
-        protocol: req.protocol,
-        host: req.get('host')
+        email: request.body.email,
+        protocol: request.protocol,
+        host: request.get('host')
       }).then(nocontent),
     res,
     req
   );
 
 export const resetPassword = (req, res) =>
-  handleFunction((request) => Promise.resolve('Hello').then(ok), res, req);
+  handleFunction(
+    (request) =>
+      resetPasswordService({
+        body: request.body,
+        params: { token: request.params.token }
+      }).then(nocontent),
+    res,
+    req
+  );

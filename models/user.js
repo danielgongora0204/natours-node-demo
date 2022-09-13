@@ -68,13 +68,10 @@ const userSchema = new mongoose.Schema(
 // DOCUMENT MIDDLEWARE
 //Does not run on .SaveMany
 userSchema.pre('validate', function (next) {
-  this.updatedDate = new Date();
-  next();
-});
-
-//Does not run on .SaveMany
-userSchema.pre('validate', function (next) {
-  this.updatedDate = new Date();
+  this.updatedDate = Date.now();
+  if (this.isModified('password')) {
+    this.passwordChangedAt = this.updatedDate;
+  }
   next();
 });
 
