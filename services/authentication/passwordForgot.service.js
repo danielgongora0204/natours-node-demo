@@ -1,3 +1,3 @@
 import forgotPassword from '../../providers/authentication/passwordForgot.provider';
 
-export default (email) => Promise.resolve(forgotPassword(email));
+export default (resetRequest) => Promise.resolve(forgotPassword(resetRequest));

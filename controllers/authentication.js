@@ -4,7 +4,7 @@ import loginService from '../services/authentication/login.service';
 import signupService from '../services/authentication/signup.service';
 import forgotPasswordService from '../services/authentication/passwordForgot.service';
 
-const { created, ok } = Response;
+const { created, ok, nocontent } = Response;
 
 export const login = (req, res) =>
   handleFunction(
@@ -25,7 +25,12 @@ export const signup = (req, res) =>
 
 export const forgotPassword = (req, res) =>
   handleFunction(
-    (request) => forgotPasswordService(req.body.email).then(ok),
+    (request) =>
+      forgotPasswordService({
+        email: req.body.email,
+        protocol: req.protocol,
+        host: req.get('host')
+      }).then(nocontent),
     res,
     req
   );

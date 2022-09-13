@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
 import { bcryptHash, auth, randomToken, cryptoHash } from '../utils/crypt';
+import { cryptoTokenExpiration } from '../constants/security';
 
 const userSchema = new mongoose.Schema(
   {
@@ -96,12 +97,12 @@ userSchema.methods.changedPasswordAfter = function (jwtTimestamp) {
   return false;
 };
 
-userSchema.methods.createPasswordResetToken = function () {
-  randomToken().then((token) =>
+userSchema.methods.createPasswordResetToken = async function () {
+  return await randomToken().then((token) =>
     cryptoHash(token)
       .then((hash) => {
         this.passwordResetToken = hash;
-        this.passwordResetTokenExpiration = Date.now();
+        this.passwordResetTokenExpiration = Date.now() + cryptoTokenExpiration;
       })
       .then(() => token)
   );
