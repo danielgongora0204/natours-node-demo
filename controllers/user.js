@@ -1,8 +1,10 @@
 import handleFunction from './_helpers/handleFunction';
 import Response from '../constants/response';
+import getUserByService from '../services/user/getUserBy.service';
 import getUsersService from '../services/user/getUsers.service';
+import deleteUserService from '../services/user/deleteUser.service';
 
-const { ok } = Response;
+const { ok, nocontent } = Response;
 
 //Handlers
 export const getUsers = (req, res) =>
@@ -12,30 +14,16 @@ export const getUsers = (req, res) =>
     req
   );
 
-export const postUser = (req, res) =>
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet implemented.',
-    data: null
-  });
-
 export const getUser = (req, res) =>
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet implemented.',
-    data: null
-  });
-
-export const patchUser = (req, res) =>
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet implemented.',
-    data: null
-  });
+  handleFunction(
+    (request) => getUserByService(request.params.id).then(ok),
+    res,
+    req
+  );
 
 export const deleteUser = (req, res) =>
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet implemented.',
-    data: null
-  });
+  handleFunction(
+    (request) => deleteUserService(request.params.id).then(nocontent),
+    res,
+    req
+  );

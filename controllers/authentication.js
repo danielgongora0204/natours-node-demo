@@ -4,6 +4,9 @@ import loginService from '../services/authentication/login.service';
 import signupService from '../services/authentication/signup.service';
 import forgotPasswordService from '../services/authentication/passwordForgot.service';
 import resetPasswordService from '../services/authentication/passwordReset.service';
+import updatePasswordService from '../services/authentication/updatePassword.service';
+import updateAccountService from '../services/authentication/updateAccount.service';
+import deleteAccountService from '../services/authentication/deleteAccount.service';
 
 const { created, ok, nocontent } = Response;
 
@@ -43,6 +46,39 @@ export const resetPassword = (req, res) =>
       resetPasswordService({
         body: request.body,
         params: { token: request.params.token }
+      }).then(nocontent),
+    res,
+    req
+  );
+
+export const updatePassword = (req, res) =>
+  handleFunction(
+    (request) =>
+      updatePasswordService({
+        body: request.body,
+        userId: request.user._id
+      }).then(ok),
+    res,
+    req
+  );
+
+export const updateAccount = (req, res) =>
+  handleFunction(
+    (request) =>
+      updateAccountService({
+        body: request.body,
+        userId: request.user._id
+      }).then(ok),
+    res,
+    req
+  );
+
+export const deleteAccount = (req, res) =>
+  handleFunction(
+    (request) =>
+      deleteAccountService({
+        body: request.body,
+        userId: request.user._id
       }).then(nocontent),
     res,
     req

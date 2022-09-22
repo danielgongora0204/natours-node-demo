@@ -93,10 +93,15 @@ const tourSchema = new mongoose.Schema(
   }
 );
 
+tourSchema.pre('findOneAndUpdate', function (next) {
+  this._update.updatedDate = Date.now();
+  next();
+});
+
 // DOCUMENT MIDDLEWARE
 //Does not run on .SaveMany
 tourSchema.pre('validate', function (next) {
-  this.updatedDate = new Date();
+  this.updatedDate = Date.now();
   next();
 });
 
@@ -105,16 +110,10 @@ tourSchema.pre('save', function (next) {
   next();
 });
 
-/*
-tourSchema.pre('save', (doc, next) => {
-  console.log(doc);
-  next();
-});*/
-
 //QUERY MIDDLEWARE
 /*To be able to run this command on any find command it is recommended to run this as a regular expression*/
 tourSchema.pre(/^find/, function (next) {
-  this.find({ secret: { $ne: true } });
+  this.find({ secret: { $ne: true }, deletedDate: { $eq: undefined } });
   next();
 });
 

@@ -3,8 +3,8 @@ import Response from '../constants/response';
 import getToursService from '../services/tour/getTours.services';
 import getTourByService from '../services/tour/getTourBy.services';
 import createTourService from '../services/tour/createTour.services';
-import updateTourProvider from '../services/tour/updateTour.services';
-import deleteTourProvider from '../services/tour/deleteTour.services';
+import updateTourService from '../services/tour/updateTour.services';
+import deleteTourService from '../services/tour/deleteTour.services';
 import getTourStatsService from '../services/tour/getTourStats.services';
 
 const { created, ok, nocontent } = Response;
@@ -112,7 +112,7 @@ export const getTour = (req, res) =>
 export const patchTour = (req, res) =>
   handleFunction(
     (request) =>
-      updateTourProvider({
+      updateTourService({
         body: request.body,
         params: { tourId: request.params.id }
       }).then(ok),
@@ -122,7 +122,7 @@ export const patchTour = (req, res) =>
 
 export const deleteTour = (req, res) =>
   handleFunction(
-    (request) => deleteTourProvider(request.params.id).then(nocontent),
+    (request) => deleteTourService(request.params.id).then(nocontent),
     res,
     req
   );

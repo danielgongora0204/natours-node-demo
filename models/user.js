@@ -68,10 +68,14 @@ const userSchema = new mongoose.Schema(
 // DOCUMENT MIDDLEWARE
 //Does not run on .SaveMany
 userSchema.pre('validate', function (next) {
+  if (this.isNew) return next();
   this.updatedDate = Date.now();
-  if (this.isModified('password')) {
-    this.passwordChangedAt = this.updatedDate;
-  }
+  next();
+});
+
+userSchema.pre('findOneAndUpdate', function (next) {
+  if (this.isNew) return next();
+  this._update.updatedDate = Date.now();
   next();
 });
 
@@ -81,8 +85,21 @@ userSchema.pre('save', function (next) {
   bcryptHash(this.password).then((result) => {
     this.password = result;
     this.passwordConfirm = undefined;
+    if (!this.isNew) {
+      this.passwordChangedAt = Date.now();
+    }
     next();
   });
+});
+
+userSchema.pre(/^find/, function (next) {
+  this.find({ deletedDate: { $eq: undefined } });
+  next();
+});
+
+userSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { deletedDate: { $eq: undefined } } });
+  next();
 });
 
 userSchema.methods.passwordAuthentication = (password, hashPassword) =>
