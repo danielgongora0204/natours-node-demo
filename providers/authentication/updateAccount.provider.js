@@ -7,7 +7,8 @@ export default (userId) => (body) =>
       {
         name: body.name || undefined,
         surname: body.surname || undefined,
-        photo: body.photo || undefined
+        photo: body.photo || undefined,
+        email: body.email || undefined
       },
       {
         new: true,
