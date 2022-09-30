@@ -10,6 +10,11 @@ export default (user) =>
       passwordConfirm: user.passwordConfirm,
       role: user.role
     })
-  ).catch((err) => {
-    throw err;
-  });
+  )
+    .then((result) => {
+      result.password = undefined;
+      return result;
+    })
+    .catch((err) => {
+      throw err;
+    });

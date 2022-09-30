@@ -19,6 +19,8 @@ export default class Response {
 
   message;
 
+  cookie;
+
   static Desc = {
     Unauthorized: {
       en: 'You are not authorized to do this operation.',
@@ -146,10 +148,19 @@ export default class Response {
     NetworkConnectTimeoutError: 599
   };
 
-  constructor(statusCode, data = null, message = null, stack = null) {
+  constructor(
+    statusCode,
+    data = undefined,
+    message = undefined,
+    cookie = undefined,
+    stack = undefined
+  ) {
     this.statusCode = statusCode;
     this.data = data;
     this.message = message;
+    if (cookie) {
+      this.cookie = cookie;
+    }
     if (environment === environmentDefault && stack) {
       this.stack = stack;
     }
@@ -193,8 +204,13 @@ export default class Response {
     return response;
   }
 
-  static nocontent() {
-    const response = new Response(Response.Codes.NoContent);
+  static nocontent(cookie = null) {
+    const response = new Response(
+      Response.Codes.NoContent,
+      undefined,
+      undefined,
+      cookie
+    );
     return response;
   }
 

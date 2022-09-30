@@ -8,11 +8,10 @@ const {
   Desc: { Unauthorized }
 } = Response;
 
-export const createToken = (data) => ({
-  token: jwt.sign({ id: data._id }, jwtSecret, {
+export const createToken = (data) =>
+  jwt.sign({ id: data._id }, jwtSecret, {
     expiresIn: jwtExpiration
-  })
-});
+  });
 
 export const verifyToken = (token) =>
   promisify(jwt.verify)(token, jwtSecret).catch((err) => {

@@ -16,7 +16,12 @@ export const login = (req, res) =>
       loginService({
         email: request.body.email,
         password: request.body.password
-      }).then(ok),
+      })
+        .then((result) => {
+          console.log(res);
+          return result;
+        })
+        .then(nocontent),
     res,
     req
   );
@@ -57,7 +62,7 @@ export const updatePassword = (req, res) =>
       updatePasswordService({
         body: request.body,
         userId: request.user._id
-      }).then(ok),
+      }).then(nocontent),
     res,
     req
   );
