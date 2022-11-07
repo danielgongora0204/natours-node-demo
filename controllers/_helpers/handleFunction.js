@@ -10,12 +10,11 @@ export default (fn, res, req) => {
   return maybePromise
     .then((result) => {
       if (result.cookie) {
-        const cookieOpt = {
+        res.cookie('jwt', result.cookie, {
           expires: new Date(Date.now() + daysToMillis(jwtCookieExpiration)),
-          httpOnly: true
-        };
-        if (environment === 'production') cookieOpt.secure = true;
-        res.cookie('jwt', result.cookie, cookieOpt);
+          httpOnly: true,
+          secure: environment === 'production'
+        });
       }
       res.status(result.statusCode).send(result);
     })

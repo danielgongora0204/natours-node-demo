@@ -65,6 +65,10 @@ export default class Response {
     EmptyRequest: {
       en: 'Empty input data.',
       es: 'Datos de entrada vacios.'
+    },
+    GenericError: {
+      en: 'An unknown error occurred.',
+      es: 'Un error desconocido a ocurrido.'
     }
   };
 
@@ -184,27 +188,27 @@ export default class Response {
     return descriptions;
   }
 
-  static create(statusCode, data, message) {
-    const response = new Response(statusCode, data, message);
-    return response;
-  }
-
   static stringify(statusCode, data, message) {
     const response = new Response(statusCode, data, message);
     return response.stringify();
   }
 
-  static ok(data, message) {
-    const response = new Response(Response.Codes.Ok, data, message);
+  static ok(data, message, cookie = undefined) {
+    const response = new Response(Response.Codes.Ok, data, message, cookie);
     return response;
   }
 
-  static created(data, message) {
-    const response = new Response(Response.Codes.Created, data, message);
+  static created(data, message, cookie = undefined) {
+    const response = new Response(
+      Response.Codes.Created,
+      data,
+      message,
+      cookie
+    );
     return response;
   }
 
-  static nocontent(cookie = null) {
+  static nocontent(cookie = undefined) {
     const response = new Response(
       Response.Codes.NoContent,
       undefined,
@@ -214,13 +218,18 @@ export default class Response {
     return response;
   }
 
-  static updated(data, message) {
-    const response = new Response(Response.Codes.Accepted, data, message);
+  static updated(data, message, cookie = undefined) {
+    const response = new Response(
+      Response.Codes.Accepted,
+      data,
+      message,
+      cookie
+    );
     return response;
   }
 
   static error(statusCode, data, message, stack) {
-    const response = new Response(statusCode, data, message, stack);
+    const response = new Response(statusCode, data, message, undefined, stack);
     return response;
   }
 

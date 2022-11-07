@@ -16,12 +16,7 @@ export const login = (req, res) =>
       loginService({
         email: request.body.email,
         password: request.body.password
-      })
-        .then((result) => {
-          console.log(res);
-          return result;
-        })
-        .then(nocontent),
+      }).then(nocontent),
     res,
     req
   );
